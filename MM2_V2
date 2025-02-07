@@ -1,1 +1,236 @@
-loadstring(game:HttpGet(('https://raw.githubusercontent.com/SaintaScripts/SaintaScript/refs/heads/main/MM2_V2')))()
+local Fluent = loadstring(game:HttpGet("https://github.com/dawid-scripts/Fluent/releases/latest/download/main.lua"))()
+local SaveManager = loadstring(game:HttpGet("https://raw.githubusercontent.com/dawid-scripts/Fluent/master/Addons/SaveManager.lua"))()
+local InterfaceManager = loadstring(game:HttpGet("https://raw.githubusercontent.com/dawid-scripts/Fluent/master/Addons/InterfaceManager.lua"))()
+
+local Window = Fluent:CreateWindow({
+    Title = "Xero Hub" .. Fluent.Version,
+    SubTitle = "by @wockyrituals",
+    TabWidth = 195,
+    Size = UDim2.fromOffset(525, 325),
+    Acrylic = true, -- The blur may be detectable, setting this to false disables blur entirely
+    Theme = "Aqua",
+    MinimizeKey = Enum.KeyCode.LeftControl -- Used when there's no MinimizeKeybind
+})
+
+-- Fluent provides Lucide Icons https://lucide.dev/icons/ for the tabs, icons are optional
+local Tabs = {
+    Main = Window:AddTab({ Title = "Xero Reborn V3", Icon = "crosshair" }),
+    V2 = Window:AddTab({ Title = "Execute V1", Icon = "unlock" }),
+    V3 = Window:AddTab({ Title = "Execute V2", Icon = "lock" }),
+    Settings = Window:AddTab({ Title = "Settings", Icon = "settings" })
+}
+
+Tabs.Main:AddParagraph({
+        Title = "I N - G A M E",
+        Content = ""
+    })
+    
+local Toggle = Tabs.Main:AddToggle("MyToggle", {Title = "No OOB Penalty", Default = false })
+
+Toggle:OnChanged(function()
+    print("Toggle changed:", Toggle.Value)  -- Fix: use Toggle.Value instead of Options.MyToggle.Value
+end)
+    
+Tabs.Main:AddButton({
+    Title = "Teleport To Corner (Left)",
+    Description = "",
+    Callback = function()
+        Window:Dialog({
+            Title = "Teleport To Corner?",
+            Content = "",
+            Buttons = {
+                {
+                    Title = "✅️",
+                    Callback = function()
+                        print("Confirmed the dialog.")
+                        -- You can add teleport logic here
+                    end
+                },
+                {
+                    Title = "❎️",
+                    Callback = function()
+                        print("Cancelled the dialog.")
+                    end
+                }
+            }
+        })
+    end
+})
+
+Tabs.Main:AddButton({
+    Title = "Teleport To Corner (Right)",
+    Description = "",
+    Callback = function()
+        Window:Dialog({
+            Title = "Teleport To Corner?",
+            Content = "",
+            Buttons = {
+                {
+                    Title = "✅️",
+                    Callback = function()
+                        print("Confirmed the dialog.")
+                        -- Add teleport logic for the right corner here
+                    end
+                },
+                {
+                    Title = "❎️",
+                    Callback = function()
+                        print("Cancelled the dialog.")
+                    end
+                }
+            }
+        })
+    end
+})
+
+Tabs.Main:AddButton({
+    Title = "Steal Ball",
+    Description = "Works even if Game on Countdown",
+    Callback = function()
+        Window:Dialog({
+            Title = "Steal The Ball?",
+            Content = "",
+            Buttons = {
+                {
+                    Title = "✅️",
+                    Callback = function()
+                        print("Confirmed the dialog.")
+                        -- Add the logic for stealing the ball here
+                    end
+                },
+                {
+                    Title = "❎️",
+                    Callback = function()
+                        print("Cancelled the dialog.")
+                    end
+                }
+            }
+        })
+    end
+})
+
+Tabs.Main:AddParagraph({
+    Title = "P L A Y E R S",
+    Content = ""
+})
+
+local Input = Tabs.Main:AddInput("Input", {
+    Title = "Player",
+    Default = "Username",
+    Placeholder = "",
+    Numeric = false, -- Only allows numbers
+    Finished = false, -- Only calls callback when you press enter
+    Callback = function(Value)
+        print("Input changed:", Value)
+        -- You can add logic to handle the player input here
+    end
+})
+
+Tabs.Main:AddButton({
+    Title = "Teleport Player To Lobby",
+    Description = "",
+    Callback = function()
+        Window:Dialog({
+            Title = "Teleport This Player To Lobby?",
+            Content = "",
+            Buttons = {
+                {
+                    Title = "✅️",
+                    Callback = function()
+                        print("Confirmed the dialog.")
+                        -- Add logic to teleport the player to the lobby here
+                    end
+                },
+                {
+                    Title = "❎️",
+                    Callback = function()
+                        print("Cancelled the dialog.")
+                    end
+                }
+            }
+        })
+    end
+})
+
+Tabs.Main:AddButton({
+    Title = "Reset Player",
+    Description = "",
+    Callback = function()
+        Window:Dialog({
+            Title = "Reset This Player?",
+            Content = "",
+            Buttons = {
+                {
+                    Title = "✅️",
+                    Callback = function()
+                        print("Confirmed the dialog.")
+                        -- Add logic to reset the player here
+                    end
+                },
+                {
+                    Title = "❎️",
+                    Callback = function()
+                        print("Cancelled the dialog.")
+                    end
+                }
+            }
+        })
+    end
+})
+
+Tabs.Main:AddParagraph({
+    Title = "S E R V E R S",
+    Content = ""
+})
+
+Tabs.Main:AddButton({
+    Title = "Crash Server",
+    Description = "",
+    Callback = function()
+        Window:Dialog({
+            Title = "Crash This Server?",
+            Content = "",
+            Buttons = {
+                {
+                    Title = "✅️",
+                    Callback = function()
+                        print("Confirmed the dialog.")
+                        -- Add logic to crash the server here (be mindful of rules and ethics)
+                    end
+                },
+                {
+                    Title = "❎️",
+                    Callback = function()
+                        print("Cancelled the dialog.")
+                    end
+                }
+            }
+        })
+    end
+})
+
+Tabs.Main:AddButton({
+    Title = "Crash Highest Server",
+    Description = "",
+    Callback = function()
+        Window:Dialog({
+            Title = "Crash The Highest Server?",
+            Content = "",
+            Buttons = {
+                {
+                    Title = "✅️",
+                    Callback = function()
+                        print("Confirmed the dialog.")
+                        -- Add logic to crash the highest server here
+                    end
+                },
+                {
+                    Title = "❎️",
+                    Callback = function()
+                        print("Cancelled the dialog.")
+                    end
+                }
+            }
+        })
+    end
+})
