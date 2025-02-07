@@ -15,8 +15,8 @@ local Window = Fluent:CreateWindow({
 -- Fluent provides Lucide Icons https://lucide.dev/icons/ for the tabs, icons are optional
 local Tabs = {
     Main = Window:AddTab({ Title = "Xero Reborn V3", Icon = "crosshair" }),
-    V2 = Window:AddTab({ Title = "Execute V1", Icon = "unlock" }),
-    V3 = Window:AddTab({ Title = "Execute V2", Icon = "lock" }),
+    V1 = Window:AddTab({ Title = "Execute V1", Icon = "unlock" }),
+    V2 = Window:AddTab({ Title = "Execute V2", Icon = "lock" }),
     Settings = Window:AddTab({ Title = "Settings", Icon = "settings" })
 }
 
@@ -234,3 +234,77 @@ Tabs.Main:AddButton({
         })
     end
 })
+
+    Tabs.V1:AddButton({
+        Title = "Execute V1",
+        Description = "Free Version",
+        Callback = function()
+            Window:Dialog({
+                Title = "Execute V1?",
+                Content = "",
+                Buttons = {
+                    {
+                        Title = "✅️",
+                        Callback = function()
+                        loadstring(game:HttpGet(('https://raw.githubusercontent.com/XeroReborn/XR-Hub/refs/heads/main/Hoopz')))()
+                            print("Confirmed the dialog.")
+                        end
+                    },
+                    {
+                        Title = "❎️",
+                        Callback = function()
+                            print("Cancelled the dialog.")
+                        end
+                    }
+                }
+            })
+        end
+    })
+    
+        Tabs.V2:AddButton({
+        Title = "Execute V2",
+        Description = "Paid Version",
+        Callback = function()
+            Window:Dialog({
+                Title = "Execute V2?",
+                Content = "",
+                Buttons = {
+                    {
+                        Title = "✅️",
+                        Callback = function()
+                        loadstring(game:HttpGet("https://raw.githubusercontent.com/XeroReborn/Test/refs/heads/main/CoinCham"))()
+                            print("Confirmed the dialog.")
+                        end
+                    },
+                    {
+                        Title = "❎️",
+                        Callback = function()
+                            print("Cancelled the dialog.")
+                        end
+                    }
+                }
+            })
+        end
+    })
+    
+    -- Addons for saving and interface management
+SaveManager:SetLibrary(Fluent)
+InterfaceManager:SetLibrary(Fluent)
+
+SaveManager:IgnoreThemeSettings()
+SaveManager:SetIgnoreIndexes({})
+InterfaceManager:SetFolder("FluentScriptHub")
+SaveManager:SetFolder("FluentScriptHub/specific-game")
+
+InterfaceManager:BuildInterfaceSection(Tabs.Settings)
+SaveManager:BuildConfigSection(Tabs.Settings)
+
+Window:SelectTab(1)
+
+Fluent:Notify({
+    Title = "Xero",
+    Content = "The script has been loaded.",
+    Duration = 5
+})
+
+SaveManager:LoadAutoloadConfig()
