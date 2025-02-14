@@ -21,7 +21,7 @@ local Tabs = {
 }
 
 Tabs.Main:AddParagraph({
-        Title = "I N - G A M E",
+        Title = "C H E A T S",
         Content = ""
     })
     
@@ -83,6 +83,11 @@ Tabs.Main:AddButton({
     end
 })
 
+Tabs.Main:AddParagraph({
+        Title = "S T E A L S",
+        Content = ""
+    })
+    
 Tabs.Main:AddButton({
     Title = "Steal Ball",
     Description = "Works even if Game on Countdown",
@@ -109,8 +114,73 @@ Tabs.Main:AddButton({
     end
 })
 
+local Input = Tabs.Main:AddInput("Input", {
+    Title = "Player",
+    Default = "Username",
+    Placeholder = "",
+    Numeric = false, -- Only allows numbers
+    Finished = false, -- Only calls callback when you press enter
+    Callback = function(Value)
+        print("Input changed:", Value)
+        -- You can add logic to handle the player input here
+    end
+})
+
+Tabs.Main:AddButton({
+    Title = "Steal Player Avatar",
+    Description = "Morphs You Into Player",
+    Callback = function()
+        Window:Dialog({
+            Title = "Morph?",
+            Content = "",
+            Buttons = {
+                {
+                    Title = "✅️",
+                    Callback = function()
+                        print("Confirmed the dialog.")
+                        -- Add the logic for stealing the ball here
+                    end
+                },
+                {
+                    Title = "❎️",
+                    Callback = function()
+                        print("Cancelled the dialog.")
+                    end
+                }
+            }
+        })
+    end
+})
+
 Tabs.Main:AddParagraph({
-    Title = "P L A Y E R S",
+        Title = "S C H E M E S",
+        Content = ""
+    })
+    
+local Input = Tabs.Main:AddInput("Input", {
+    Title = "Player",
+    Default = "Username",
+    Placeholder = "",
+    Numeric = false, -- Only allows numbers
+    Finished = false, -- Only calls callback when you press enter
+    Callback = function(Value)
+        print("Input changed:", Value)
+        -- You can add logic to handle the player input here
+    end
+})
+
+local Toggle = Tabs.Main:AddToggle("MyToggle", {Title = "Steal Player Items", Default = false })
+
+local MultiDropdown = Tabs.Main:AddDropdown("MultiDropdown", {
+        Title = "Items To Steal",
+        Description = "You can select multiple values.",
+        Values = {"Ball Skins", "Ball Trails", "Goal Effects", "Celebrations", "Intro Animations", "Auras", "Cash", },
+        Multi = true,
+        Default = {"Ball Skins", "Goal Effects"},
+    })
+
+Tabs.Main:AddParagraph({
+    Title = "T R O L L I N G",
     Content = ""
 })
 
@@ -179,7 +249,7 @@ Tabs.Main:AddButton({
 })
 
 Tabs.Main:AddParagraph({
-    Title = "S E R V E R S",
+    Title = "C R A S H I N G",
     Content = ""
 })
 
