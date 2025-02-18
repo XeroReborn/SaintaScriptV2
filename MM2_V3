@@ -3,7 +3,7 @@ local character = player.Character or player.CharacterAdded:Wait()
 local humanoidRootPart = character:WaitForChild("HumanoidRootPart")
 local runService = game:GetService("RunService")
 
-local MAX_DISTANCE = 25
+local MAX_DISTANCE = 75
 
 local function simulateTouch(part1, part2)
     firetouchinterest(part1, part2, 0)
