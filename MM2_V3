@@ -1,37 +1,66 @@
-local player = game.Players.LocalPlayer
-local character = player.Character or player.CharacterAdded:Wait()
-local humanoidRootPart = character:WaitForChild("HumanoidRootPart")
-local runService = game:GetService("RunService")
+local plr = game:GetService("Players").LocalPlayer
+local char = plr.Character or plr.CharacterAdded:Wait()
+local ws = game:GetService("Workspace")
+local cam = ws.CurrentCamera
+local hum = char:WaitForChild("Humanoid")
+local Vim = game:GetService("VirtualInputManager")
 
-local MAX_DISTANCE = 75
-
-local function simulateTouch(part1, part2)
-    firetouchinterest(part1, part2, 0)
-    task.wait(0.05)
-    firetouchinterest(part1, part2, 1)
+-- A more detailed and responsive arc function
+local function calculateArc(distance)
+    -- Adjust the arc calculation for various distances
+    if distance >= 70 then
+        return -5 -- For far distances, give it a high arc
+    elseif distance >= 50 then
+        return -10 -- For mid-range, give it a moderate arc
+    elseif distance >= 30 then
+        return -15 -- Shorter distance, steeper arc
+    else
+        return -20 -- Very short distance, sharp arc
+    end
 end
 
-local function getNearestBall()
-    local nearestBall = nil
-    local nearestDistance = MAX_DISTANCE
-    local searchScope = workspace:GetPartBoundsInBox(humanoidRootPart.CFrame, Vector3.new(MAX_DISTANCE, MAX_DISTANCE, MAX_DISTANCE))
-
-    for _, object in ipairs(searchScope) do
-        if object:IsA("BasePart") and object.Name:lower() == "ball" then
-            local distance = (object.Position - humanoidRootPart.Position).Magnitude
-            if distance <= nearestDistance then
-                nearestDistance = distance
-                nearestBall = object
+local function nearestHoop()
+    local dist, target = math.huge, nil
+    for _, container in ipairs({ws:FindFirstChild("Courts"), ws:FindFirstChild("PracticeArea")}) do
+        if container then
+            for _, court in ipairs(container:GetChildren()) do
+                for _, obj in ipairs(court:GetDescendants()) do
+                    if obj.Name == "Swish" and obj.Parent:FindFirstChildOfClass("TouchTransmitter") then
+                        local mag = (char.PrimaryPart.Position - obj.Parent.Position).Magnitude
+                        if mag < dist then
+                            dist, target = mag, obj.Parent
+                        end
+                    end
+                end
             end
         end
     end
-    return nearestBall, nearestDistance
+    return target, dist
 end
 
-runService.Heartbeat:Connect(function()
-    local ball, distance = getNearestBall()
-    if ball then
-        simulateTouch(humanoidRootPart, ball)
-        print("Touched nearest ball:", ball.Name, "at distance:", distance)
+local function aim()
+    local hoop, dist = nearestHoop()
+    if hoop then
+        -- More realistic arc aiming
+        local arcOffset = calculateArc(dist)
+        -- Adjust camera to aim at the hoop considering the arc and player position
+        cam.CFrame = CFrame.new(cam.CFrame.Position, hoop.Position + Vector3.new(0, arcOffset, 0))
+    end
+end
+
+hum.StateChanged:Connect(function(_, s)
+    if s == Enum.HumanoidStateType.Jumping then
+        cam.CameraType = Enum.CameraType.Follow
+        aim() -- Trigger aiming when jumping
+
+        -- MUST LOOK AT FAR SIDE OF COURT
+        local centerX = cam.ViewportSize.X / 1.9
+        local centerY = cam.ViewportSize.Y / 9
+
+        -- Send mouse click event to the exact center of the screen
+        Vim:SendMouseButtonEvent(centerX, centerY, 0, true, nil, 0)
+        Vim:SendMouseButtonEvent(centerX, centerY, 0, false, nil, 0)
+    elseif s == Enum.HumanoidStateType.Landed then
+        cam.CameraType = Enum.CameraType.Custom -- Reset to custom camera when landing
     end
 end)
